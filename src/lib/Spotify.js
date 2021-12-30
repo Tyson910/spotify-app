@@ -28,3 +28,18 @@ export async function getUsersPlaylists(refresh_token) {
     },
   });
 }
+
+export async function getUsersTopTracks(refresh_token) {
+  const { access_token } = await getAccessToken(refresh_token);
+  const x = await fetch(
+    `${SPOTIFY_API_ENDPOINT}/me/top/tracks`,
+    {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    }
+  );
+
+  debugger;
+  return x;
+}
