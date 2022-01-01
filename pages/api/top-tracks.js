@@ -3,8 +3,7 @@ import { getSession } from 'next-auth/react';
 
 export default async function handler(req, res) {
   const { accessToken } = await getSession({ req });
-  const response = await getUsersTopTracks(accessToken);
-  const { items } = await response.json();
+  const { items } = await getUsersTopTracks(accessToken);
   if (items) {
     return res.status(200).json({ items });
   } else {
