@@ -1,3 +1,18 @@
+export function AudioFeatureMoreInfo({ feature }) {
+  const { category, description, average } = feature;
+  return (
+    <div className="space-y-2 py-5">
+      <p className="capitalize font-bold text-xl">{category}</p>
+      <p>{description}</p>
+      {category == 'tempo' ? (
+        <p className="text-xl font-medium">Average BPM: {`${average}`}</p>
+      ) : (
+        <AudioFeatureMeter feature={feature} />
+      )}
+    </div>
+  );
+}
+
 function AudioFeatureMeter({ feature }) {
   const { category, average, max, min } = feature;
   return (
