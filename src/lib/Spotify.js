@@ -56,20 +56,19 @@ export async function getUsersTopTracks(refresh_token) {
     return e;
   }
 }
-export async function getTracksAnalysis(refresh_token) {
+export async function getOneTrackAnalysis(refresh_token, id) {
   const { access_token } = await getAccessToken(refresh_token);
-  const allTracks = await getUsersTopTracks(refresh_token);
-  const allTrackIds = allTracks?.items?.map(({ id }) => id).join();
   try {
-    const tracks = await SPOTIFY_AXIOS_ENDPOINT.get('/audio-features', {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-      params: {
-        ids: allTrackIds,
-      },
-    });
-    return tracks?.data?.audio_features;
+    const trackFeatures = await SPOTIFY_AXIOS_ENDPOINT.get(
+      `/audio-features/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+
+    return trackFeatures?.data;
   } catch (e) {
     console.log(e);
     return e;
