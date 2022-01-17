@@ -1,3 +1,23 @@
+import Image from 'next/image';
+import { VALID_AUDIO_CATEGORIES } from '../lib/constants';
+export function SpotifyTracksContainer({ tracks }) {
+  return (
+    <>
+      <h2 className="text-center font-semibold md:text-4xl">
+        Your Favorite Tracks
+      </h2>
+      <div
+        className={`grid grid-cols-1 md:grid-cols-2 
+          my-12 p-10 gap-y-20 md:gap-x-12 md:max-h-[500px] 
+          overflow-y-scroll bg-zinc-50 shadow-inner`}
+      >
+        {tracks?.map((track) => (
+          <SpotifyTrackLink key={track.id} track={track} />
+        ))}
+      </div>
+    </>
+  );
+}
 export function SpotifyTrackLink({ track }) {
   const { id, name, album, artists, external_urls, analysis } = track;
 
