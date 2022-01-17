@@ -1,5 +1,11 @@
 export const VALID_AUDIO_CATEGORIES = [
   {
+    category: 'tempo',
+    description: `The overall estimated tempo of a track in beats per minute (BPM).
+          In musical terminology, tempo is the speed or pace of a given piece and derives 
+          directly from the average beat duration.`,
+  },
+  {
     category: 'acousticness',
     description: `A confidence measure from 0.0 to 1.0 of 
         whether the track is acoustic. 1.0 represents high confidence the track is acoustic.`,
@@ -28,12 +34,6 @@ export const VALID_AUDIO_CATEGORIES = [
           the greater likelihood the track contains no vocal content. 
           Values above 0.5 are intended to represent instrumental tracks, 
           but confidence is higher as the value approaches 1.0.`,
-  },
-  {
-    category: 'tempo',
-    description: `The overall estimated tempo of a track in beats per minute (BPM).
-          In musical terminology, tempo is the speed or pace of a given piece and derives 
-          directly from the average beat duration.`,
   },
   {
     category: 'valence',
