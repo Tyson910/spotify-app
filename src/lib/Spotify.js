@@ -41,7 +41,15 @@ export async function getUsersTopTracks(refresh_token) {
         limit: 50,
       },
     });
+
     const { data } = tracks;
+    //add track analysis data to each track
+    data.items = await Promise.all(
+      data?.items?.map(async (item) => {
+        item.analysis = await getOneTrackAnalysis(refresh_token, item.id);
+        return item;
+      })
+    );
     return data;
   } catch (e) {
     console.log(e);
