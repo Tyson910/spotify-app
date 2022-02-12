@@ -42,8 +42,12 @@ export function AudioAnalysis({ tracks }) {
       <div className="text-center mb-10">
         <h1 className="text-6xl font-semibold">Your Audio Profile</h1>
         <p className="text-2xl mt-5">
-          Based On Averages Of Your Top 50 Favorite Tracks
+          Based On Averages Of Your Recent Top 50 Favorite Tracks
         </p>
+        <span className="text-lg font-light mb-5 ">
+          Calculated from approximately the last 4 weeks of your listening
+          history.
+        </span>
       </div>
 
       <div className="container flex flex-col mb-40 divide-y-2 divide-black border-t-2 border-b-2 border-black">
@@ -54,5 +58,3 @@ export function AudioAnalysis({ tracks }) {
     </>
   );
 }
-
-

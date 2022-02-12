@@ -39,6 +39,7 @@ export async function getUsersTopTracks(refresh_token) {
       },
       params: {
         limit: 50,
+        time_range: 'short_term',
       },
     });
 
