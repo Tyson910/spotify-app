@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
+const isProd = process.env.NODE_ENV == 'production'
 const scope =
   'user-read-private user-read-email user-read-recently-played user-library-read user-top-read'.replace(
     ' ',
@@ -15,7 +16,7 @@ const options = {
       clientSecret: process.env.CLIENT_SECRET,
     }),
   ],
-  debug: true,
+  debug: !isProd,
   secret: process.env.SECRET,
   callbacks: {
     redirect({ url, baseUrl }) {
