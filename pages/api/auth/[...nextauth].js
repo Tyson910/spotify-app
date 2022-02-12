@@ -2,15 +2,15 @@ import NextAuth from 'next-auth';
 import SpotifyProvider from 'next-auth/providers/spotify';
 
 const scope =
-  'user-read-private user-read-email user-read-recently-played user-library-read user-top-read';
+  'user-read-private user-read-email user-read-recently-played user-library-read user-top-read'.replace(
+    ' ',
+    ','
+  );
 
 const options = {
   providers: [
     SpotifyProvider({
-      authorization: `https://accounts.spotify.com/authorize?scope=${scope.replace(
-        ' ',
-        ','
-      )}`,
+      authorization: `https://accounts.spotify.com/authorize?scope=${scope}`,
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
     }),
@@ -27,14 +27,16 @@ const options = {
       }
       return token;
     },
-    async session({session, token}) {
+    async session({ session, token }) {
       // Add property to session, like an access_token from a provider.
       if (token) {
-        session?.accessToken = token?.accessToken;
+        session.accessToken = token?.accessToken;
       }
-      return session
+      if (!session?.image || !session?.user?.image) {
+        session.user.image = null;
+      }
+      return session;
     },
   },
 };
-
 export default (req, res) => NextAuth(req, res, options);
