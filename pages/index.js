@@ -1,3 +1,4 @@
+import { TopTracks } from '../src/components/TopTracks';
 export default function Home() {
-  return <>Welcome</>;
+  return <TopTracks />;
 }
