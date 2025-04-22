@@ -1,4 +1,4 @@
-import { defineConfig } from 'orval'
+import { defineConfig } from 'orval';
 
 export default defineConfig({
   'spotify-vue-query': {
@@ -37,4 +37,4 @@ export default defineConfig({
       indexFiles: false,
     },
   },
-})
+});

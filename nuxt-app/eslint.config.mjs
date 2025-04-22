@@ -1,8 +1,10 @@
-import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
-import pluginQuery from '@tanstack/eslint-plugin-query'
+import { createConfigForNuxt } from '@nuxt/eslint-config/flat';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 
 export default createConfigForNuxt({
   features: {
-    stylistic: true,
+    stylistic: {
+      semi: true,
+    },
   },
-}).append(pluginQuery.configs['flat/recommended'])
+}).append(pluginQuery.configs['flat/recommended']);
