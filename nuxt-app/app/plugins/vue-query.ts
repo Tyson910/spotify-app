@@ -8,6 +8,7 @@ import {
   hydrate,
   dehydrate,
 } from '@tanstack/vue-query';
+import { FetchError } from 'ofetch';
 // Nuxt 3 app aliases
 import { defineNuxtPlugin, useState } from '#imports';
 
@@ -17,7 +18,29 @@ export default defineNuxtPlugin((nuxt) => {
 
   // Modify your Vue Query global settings here
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { staleTime: 5000 } },
+    defaultOptions: {
+      queries: { staleTime: 5000 },
+      mutations: {
+        onError(error, _variables, _context) {
+          if (error instanceof FetchError && 'message' in error.data) {
+            toast.add({
+              title: `Error: ${error.statusText}`,
+              description: error.data.message,
+              color: 'error',
+              duration: 4000,
+            });
+          }
+          else {
+            toast.add({
+              title: 'Error',
+              description: error.message,
+              color: 'error',
+              duration: 4000,
+            });
+          }
+        },
+      },
+    },
   });
   const options: VueQueryPluginOptions = { queryClient };
 
