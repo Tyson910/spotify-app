@@ -1,6 +1,8 @@
-// @ts-check
-import withNuxt from './.nuxt/eslint.config.mjs'
+import { createConfigForNuxt } from '@nuxt/eslint-config/flat'
+import pluginQuery from '@tanstack/eslint-plugin-query'
 
-export default withNuxt(
-  // Your custom configs here
-)
+export default createConfigForNuxt({
+  features: {
+    stylistic: true,
+  },
+}).append(pluginQuery.configs['flat/recommended'])
