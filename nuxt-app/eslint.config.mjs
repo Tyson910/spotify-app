@@ -7,4 +7,7 @@ export default createConfigForNuxt({
       semi: true,
     },
   },
-}).append(pluginQuery.configs['flat/recommended']);
+}).append(pluginQuery.configs['flat/recommended'])
+  .overrideRules({
+    'vue/multi-word-component-names': 'off',
+  });
