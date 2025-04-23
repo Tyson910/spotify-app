@@ -2,16 +2,19 @@ import { defineErrorResponseHandler } from '~~/server/utils/error-event-handler'
 
 export default defineErrorResponseHandler(async (event) => {
   const state = crypto.randomUUID();
-  const scope = `user-read-recently-played 
-  user-read-private 
-  user-read-email 
-  user-library-read 
-  user-top-read 
-  user-follow-read 
-  playlist-read-private 
-  playlist-read-collaborative 
-  playlist-modify-public 
-  playlist-modify-private`;
+
+  const scopes = [
+    'user-read-recently-played',
+    'user-read-private',
+    'user-read-email',
+    'user-library-read',
+    'user-top-read',
+    'user-follow-read',
+    'playlist-read-private',
+    'playlist-read-collaborative',
+    'playlist-modify-public',
+    'playlist-modify-private',
+  ] as const;
 
   const { CLIENT_ID, REDIRECT_URI } = useRuntimeConfig(event);
 
@@ -19,7 +22,7 @@ export default defineErrorResponseHandler(async (event) => {
     response_type: 'code',
     client_id: CLIENT_ID,
     show_dialog: 'true',
-    scope,
+    scope: scopes.join(' '),
     redirect_uri: REDIRECT_URI,
     state,
   };
