@@ -26,15 +26,6 @@ export default defineErrorResponseHandler(async (event) => {
     redirect_uri: REDIRECT_URI,
     state,
   };
-  const didHandleCors = handleCors(event, {
-    origin: '*', // You can restrict to 'http://localhost:3000' if you want
-    methods: ['GET', 'POST'],
-    preflight: {
-      statusCode: 204,
-    },
-  });
-
-  if (didHandleCors) return;
 
   setCookie(event, 'state', state, { path: '/' });
   const queryParams = new URLSearchParams(spotifyCredOptions).toString();
