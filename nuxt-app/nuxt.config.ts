@@ -20,6 +20,9 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
+  experimental: {
+    typedPages: true,
+  },
 
   compatibilityDate: '2024-11-27',
 
