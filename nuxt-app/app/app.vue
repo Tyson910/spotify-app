@@ -18,6 +18,7 @@ useHead({
       <div
         class="min-h-screen flex flex-col scroll-smooth bg-(--ui-bg-muted) text-(--ui-text) selection:bg-(--ui-primary) selection:text-(--ui-color-primary-50)"
       >
+        <NavBar />
         <main
           class="flex-grow"
         >
