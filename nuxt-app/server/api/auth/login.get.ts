@@ -27,7 +27,21 @@ export default defineErrorResponseHandler(async (event) => {
     state,
   };
 
-  setCookie(event, 'state', state, { path: '/' });
+  const cookieExpirationDateTime = new Date();
+  cookieExpirationDateTime.setTime(cookieExpirationDateTime.getTime() + (60 * 60 * 1000)); // expire in an hour
+  setCookie(event, 'state', state, {
+    // HttpOnly: Cookies are only accessible server-side
+    httpOnly: true,
+    // SameSite=Lax: Use Strict for critical websites
+    sameSite: 'lax',
+    // Secure: Cookies can only be sent over HTTPS
+    secure: !import.meta.dev,
+    // Path=/: Cookies can be accessed from all routes
+    path: '/',
+    // Max-Age or Expires: Must be defined to persist cookies
+    expires: cookieExpirationDateTime,
+  });
+
   const queryParams = new URLSearchParams(spotifyCredOptions).toString();
 
   return sendRedirect(event, 'https://accounts.spotify.com/authorize?'
