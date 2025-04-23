@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3';
 import { z } from 'zod';
+import { defineErrorResponseHandler } from '~~/server/utils/error-event-handler';
 
 async function requestAccessToken({ authCode, event }: { authCode: string; event: H3Event }) {
   const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
@@ -51,7 +52,8 @@ const queryParamValidator = z.union([
     code: z.string().describe('An authorization code that can be exchanged for an access token.'),
   }),
 ]);
-export default defineEventHandler(async (event) => {
+
+export default defineErrorResponseHandler(async (event) => {
   const validatedQuery = await getValidatedQuery(event, queryParamValidator.parse);
 
   if ('error' in validatedQuery) {

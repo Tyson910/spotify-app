@@ -1,4 +1,6 @@
-export default defineEventHandler(async (event) => {
+import { defineErrorResponseHandler } from '~~/server/utils/error-event-handler';
+
+export default defineErrorResponseHandler(async (event) => {
   const state = crypto.randomUUID();
   const scope = `user-read-recently-played 
   user-read-private 
