@@ -6,6 +6,22 @@ const features = [
   'Discover new tracks that match your workout tempo',
   'Save custom playlists directly to your Spotify account',
 ] as const;
+
+async function loginRequest() {
+  try {
+    await navigateTo('/api/auth/login', {
+      external: true,
+    });
+  }
+  catch {
+    useToast().add({
+      title: 'Error',
+      description: 'Unable to sign in. Please try again',
+      color: 'error',
+      duration: 4000,
+    });
+  }
+}
 </script>
 
 <template>
@@ -46,6 +62,7 @@ const features = [
         size="xl"
         class="rounded-full py-3 transition-colors duration-300"
         icon="i-simple-icons-spotify"
+        @click="loginRequest"
       />
       <p class="text-xs text-center text-gray-400 mt-4">
         By continuing, you agree to allow {{ appConfig.siteName }} to access your Spotify account data in accordance with our <NuxtLink
