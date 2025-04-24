@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools';
+
 const appConfig = useAppConfig();
 
 useHead({
@@ -12,6 +14,9 @@ useHead({
 
 <template>
   <Body>
+    <DevOnly>
+      <VueQueryDevtools />
+    </DevOnly>
     <NuxtRouteAnnouncer />
     <NuxtLoadingIndicator />
     <UApp>
