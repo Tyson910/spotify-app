@@ -8,7 +8,7 @@ export const spotifyFetch = async <T>(
     body,
     ...options
   }: FetchOptions & {
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   },
 ): Promise<T> => {
   const accessToken = useCookie('access_token', { readonly: true });
