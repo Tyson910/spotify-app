@@ -48,8 +48,8 @@ export async function requestSpotifyToken(event: H3Event, bodyParams: BodyParamO
   const { refresh_token, access_token, expires_in } = validatedReponseResult.data;
 
   const cookieSettings = {
-    // HttpOnly: Cookies are only accessible server-side
-    httpOnly: true,
+    // HttpOnly: Cookies are both server-side & on browser
+    httpOnly: false,
     // SameSite=Lax: Use Strict for critical websites
     sameSite: 'lax',
     // Secure: Cookies can only be sent over HTTPS
