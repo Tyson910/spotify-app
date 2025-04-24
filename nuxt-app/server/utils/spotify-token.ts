@@ -48,20 +48,29 @@ export async function requestSpotifyToken(event: H3Event, bodyParams: BodyParamO
   const { refresh_token, access_token, expires_in } = validatedReponseResult.data;
 
   const cookieSettings = {
-    // HttpOnly: Cookies are both server-side & on browser
-    httpOnly: false,
     // SameSite=Lax: Use Strict for critical websites
     sameSite: 'lax',
     // Secure: Cookies can only be sent over HTTPS
     secure: !import.meta.dev,
-    // Max-Age or Expires: Must be defined to persist cookies
-    maxAge: expires_in,
     // Path=/: Cookies can be accessed from all routes
     path: '/',
   } as const;
 
-  setCookie(event, 'refresh_token', refresh_token, cookieSettings);
-  setCookie(event, 'access_token', access_token, cookieSettings);
+  setCookie(event, 'refresh_token', refresh_token,
+    {
+      ...cookieSettings,
+      // HttpOnly: Cookies are only accessible server-side
+      httpOnly: true,
+      // Max-Age or Expires: Must be defined to persist cookies
+      maxAge: 14 * 24 * 60 * 60, // calculate the expiration time in seconds (14 days * 24 hours/day * 60 minutes/hour * 60 seconds/minute).
+    });
+  setCookie(event, 'access_token', access_token, {
+    ...cookieSettings,
+    // HttpOnly: Cookies are both server-side & on browser
+    httpOnly: false,
+    // Max-Age or Expires: Must be defined to persist cookies
+    maxAge: expires_in,
+  });
 
   return validatedReponseResult.data;
 }
