@@ -19,7 +19,7 @@ export const spotifyFetch = async <T>(
     body,
     params,
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken.value}`,
     },
     retryStatusCodes: [401, 408, 409, 425, 429, 500, 502, 503, 504],
     async onResponseError({ response }) {
