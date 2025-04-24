@@ -15,11 +15,21 @@ export default defineConfig({
       mode: 'tags-split',
       indexFiles: false,
       clean: true,
-      mock: {
-        type: 'msw',
-        delay: 100,
-        useExamples: true,
-        generateEachHttpStatus: true,
+      mock: true,
+      override: {
+        mock: {
+          type: 'msw',
+          delay: 100,
+          useExamples: true,
+          generateEachHttpStatus: true,
+        },
+        mutator: {
+          path: '../../nuxt-app/app/utils/spotify-client.ts',
+          name: 'spotifyFetch',
+        },
+        fetch: {
+          includeHttpResponseReturnType: false,
+        },
       },
     },
   },
