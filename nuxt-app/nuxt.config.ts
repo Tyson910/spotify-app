@@ -22,8 +22,8 @@ export default defineNuxtConfig({
   },
   experimental: {
     typedPages: true,
+    cookieStore: true,
   },
-
   compatibilityDate: '2024-11-27',
 
 });
