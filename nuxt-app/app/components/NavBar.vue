@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import type { NavigationMenuItem } from '@nuxt/ui';
+import { useMutation } from '@tanstack/vue-query';
+import { useGetCurrentUsersProfile } from '~~/generated/endpoints/users/users';
+
+const accessToken = useCookie('access_token', { readonly: true });
+
+const user = useGetCurrentUsersProfile({
+  query: {
+    enabled: !!accessToken.value,
+  },
+});
 
 const colorMode = useColorMode();
 
@@ -19,6 +29,28 @@ const navLinks = ref<NavigationMenuItem[]>([
     to: '/',
   },
 ]);
+
+const logout = useMutation({
+  mutationFn: async () => {
+    await $fetch('/api/auth/logout');
+    await navigateTo('/', {
+      external: false,
+    });
+  },
+});
+
+const aviImage = computed(() => {
+  if (!user.data.value) {
+    return null;
+  }
+  const { images } = user.data.value;
+
+  if (!images) {
+    return null;
+  }
+
+  return images.at(0) ?? null;
+});
 </script>
 
 <template>
@@ -37,32 +69,32 @@ const navLinks = ref<NavigationMenuItem[]>([
           active-variant="link"
         />
       </div>
-      <div class="flex flex-row items-center">
+
+      <div class="space-x-5 flex flex-row items-center">
+        <ClientOnly v-if="!colorMode?.forced">
+          <UButton
+            :icon="isDarkMode ? 'i-lucide-moon' : 'i-lucide-sun'"
+            color="neutral"
+            variant="ghost"
+            @click="isDarkMode = !isDarkMode"
+          />
+        </ClientOnly>
+        <UAvatar
+          v-if="user.data.value"
+          size="md"
+          :alt="user.data.value.display_name"
+          :src="aviImage ? aviImage.url : undefined"
+          :icon="aviImage ? undefined : 'i-lucide-user'"
+        />
         <UButton
+          v-if="user.data.value"
           variant="outline"
           label="Log Out"
           color="neutral"
           active-color="primary"
           active-variant="link"
-          class="mr-5"
+          @click="logout.mutate()"
         />
-        <div class="space-x-4 md:flex md:flex-row md:items-center">
-          <ClientOnly v-if="!colorMode?.forced">
-            <UButton
-              :icon="isDarkMode ? 'i-lucide-moon' : 'i-lucide-sun'"
-              color="neutral"
-              variant="ghost"
-              @click="isDarkMode = !isDarkMode"
-            />
-            <template #fallback>
-              <UButton
-                icon="i-lucide-sun"
-                color="neutral"
-                variant="ghost"
-              />
-            </template>
-          </ClientOnly>
-        </div>
       </div>
     </UContainer>
   </div>
