@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/scripts',
     '@nuxt/test-utils',
+    '@vueuse/nuxt',
   ],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
