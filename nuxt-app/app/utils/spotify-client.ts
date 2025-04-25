@@ -13,7 +13,9 @@ export const spotifyFetch = async <T>(
 ): Promise<T> => {
   const accessToken = useCookie('access_token', { readonly: true });
 
-  const response = await $fetch(url, {
+  const requestFetch = useRequestFetch();
+
+  const response = await requestFetch(url, {
     baseURL: 'https://api.spotify.com/v1',
     method,
     body,
@@ -24,8 +26,7 @@ export const spotifyFetch = async <T>(
     retryStatusCodes: [401, 408, 409, 425, 429, 500, 502, 503, 504],
     async onResponseError({ response }) {
       if (response.status === 401) {
-        await $fetch('/api/auth/refresh');
-        refreshCookie('access_token');
+        await useFetch('/api/auth/refresh');
       }
     },
     ...options,
