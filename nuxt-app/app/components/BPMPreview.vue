@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import drumSfx from '~~/public/sounds/909-drums.mp3';
 
-const props = defineProps<{
-  currentBpm: number;
-}>();
+const currentBPM = useState('current-bpm', () => 100);
 
 const { play } = useSound(drumSfx, {
   sprite: {
@@ -14,7 +12,7 @@ const { play } = useSound(drumSfx, {
   },
 });
 
-const interval = computed(() => (60000 / props.currentBpm));
+const interval = computed(() => (60000 / currentBPM.value));
 
 const { pause, resume, isActive } = useIntervalFn(() => {
   // @ts-expect-error idk why they want this to be a number
@@ -36,8 +34,14 @@ const { pause, resume, isActive } = useIntervalFn(() => {
       </h2>
       <div class="text-center space-y-4">
         <div class="text-4xl font-mono font-bold">
-          {{ props.currentBpm }} BPM
+          {{ currentBPM }} BPM
         </div>
+
+        <USlider
+          v-model="currentBPM"
+          :min="60"
+          :max="200"
+        />
         <UButton
           block
           class="py-4"
@@ -46,7 +50,7 @@ const { pause, resume, isActive } = useIntervalFn(() => {
           @click="isActive ? pause() : resume() "
         />
         <p class="text-xs text-(--ui-text-muted)">
-          Hear what {{ props.currentBpm }} BPM sounds like to better understand the tempo
+          Hear what {{ currentBPM }} BPM sounds like to better understand the tempo
         </p>
       </div>
     </UCard>
