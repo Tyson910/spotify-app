@@ -1,11 +1,11 @@
+import { useGetCurrentUsersProfile } from '~~/generated/endpoints/users/users';
+
 export default defineNuxtRouteMiddleware(async (to) => {
-  const accessToken = useCookie('access_token', { readonly: true });
+  const { suspense } = useGetCurrentUsersProfile();
 
-  if (!accessToken.value) {
-    const { data, error } = await useFetch('/api/auth/refresh');
+  const { error, data } = await suspense();
 
-    if (error || !data.value?.success) {
-      return navigateTo(`/login?redirect_url=${to.fullPath}`);
-    }
+  if (error || !data) {
+    return navigateTo(`/login?redirect_url=${to.fullPath}`);
   }
 });
