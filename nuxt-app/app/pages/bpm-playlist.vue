@@ -4,14 +4,12 @@ import BPMPreview from '~/components/BPMPreview.vue';
 definePageMeta({
   middleware: 'protected',
 });
-
-const currentBPM = ref(100);
 </script>
 
 <template>
   <div>
     <UContainer>
-      <BPMPreview :current-bpm="currentBPM" />
+      <BPMPreview />
       <UCard>
         <h2 class="text-xl font-bold mb-2">
           Stats
