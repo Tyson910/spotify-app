@@ -38,7 +38,13 @@ export async function requestSpotifyToken(event: H3Event, bodyParams: BodyParamO
     refresh_token: z.string().optional(),
   })
   // Make sure we have a refresh token when logging in
-    .refine(val => bodyParams.grant_type == 'authorization_code' && typeof val.refresh_token == 'string');
+    .refine((val) => {
+      if (bodyParams.grant_type == 'authorization_code') {
+        return typeof val.refresh_token == 'string';
+      }
+      // otherwise we dont care about refresh_token
+      return true;
+    });
 
   const validatedReponseResult = responseValidator.safeParse(response);
 
