@@ -1,9 +1,11 @@
-export default defineNuxtRouteMiddleware((to) => {
-  const accessToken = useCookie('access_token');
-  if (!accessToken) {
-    return navigateTo(`/login`);
-  }
+export default defineNuxtRouteMiddleware(async (to) => {
+  const accessToken = useCookie('access_token', { readonly: true });
 
-  const user = useSpotifyUser();
-  if (!user.value) return navigateTo(`/login?redirect_url=${to.fullPath}`);
+  if (!accessToken.value) {
+    const { data, error } = await useFetch('/api/auth/refresh');
+
+    if (error || !data.value?.success) {
+      return navigateTo(`/login?redirect_url=${to.fullPath}`);
+    }
+  }
 });
