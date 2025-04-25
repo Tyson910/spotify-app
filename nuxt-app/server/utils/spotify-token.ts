@@ -25,7 +25,6 @@ export async function requestSpotifyToken(event: H3Event, bodyParams: BodyParamO
     onResponseError({ response }) {
       console.error(response);
       console.error(response._data);
-      deleteCookie(event, 'refresh_token');
       deleteCookie(event, 'access_token');
       throw createError({ ...HTTP_SERVER_ERROR_CODES.BAD_REQUEST, message: 'Unable to log in' });
     },
@@ -36,8 +35,10 @@ export async function requestSpotifyToken(event: H3Event, bodyParams: BodyParamO
     token_type: z.literal('Bearer').describe('How the access token may be used: always "Bearer".'),
     scope: z.string().describe('An access token that can be provided in subsequent calls, for example to Spotify Web API services.'),
     expires_in: z.number().describe('The time period (in seconds) for which the access token is valid.'),
-    refresh_token: z.string(),
-  });
+    refresh_token: z.string().optional(),
+  })
+  // Make sure we have a refresh token when logging in
+    .refine(val => bodyParams.grant_type == 'authorization_code' && typeof val.refresh_token == 'string');
 
   const validatedReponseResult = responseValidator.safeParse(response);
 
@@ -56,14 +57,16 @@ export async function requestSpotifyToken(event: H3Event, bodyParams: BodyParamO
     path: '/',
   } as const;
 
-  setCookie(event, 'refresh_token', refresh_token,
-    {
-      ...cookieSettings,
-      // HttpOnly: Cookies are only accessible server-side
-      httpOnly: true,
-      // Max-Age or Expires: Must be defined to persist cookies
-      maxAge: 14 * 24 * 60 * 60, // calculate the expiration time in seconds (14 days * 24 hours/day * 60 minutes/hour * 60 seconds/minute).
-    });
+  if (refresh_token) {
+    setCookie(event, 'refresh_token', refresh_token,
+      {
+        ...cookieSettings,
+        // HttpOnly: Cookies are only accessible server-side
+        httpOnly: true,
+        // Max-Age or Expires: Must be defined to persist cookies
+        maxAge: 14 * 24 * 60 * 60, // calculate the expiration time in seconds (14 days * 24 hours/day * 60 minutes/hour * 60 seconds/minute).
+      });
+  }
   setCookie(event, 'access_token', access_token, {
     ...cookieSettings,
     // HttpOnly: Cookies are both server-side & on browser
