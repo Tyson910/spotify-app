@@ -28,6 +28,11 @@ const navLinks = ref<NavigationMenuItem[]>([
     icon: 'i-lucide-house',
     to: '/',
   },
+  {
+    label: 'BPM Playlist',
+    icon: 'i-lucide-music',
+    to: '/bpm-playlist',
+  },
 ]);
 
 const logout = useMutation({
